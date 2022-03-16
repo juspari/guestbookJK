@@ -4,27 +4,28 @@ var fs = require('fs');
 var app = express();
 const PORT = process.env.PORT || 8081;
 
-app.use('/css',express.static(__dirname +'/css'));
+app.use('/css',express.static(__dirname +'/css')); //load the css
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');   
+    res.sendFile(__dirname + '/index.html');  //load index.html
 });
 
 app.get('/guestbook', function(req, res){
-    var data = require('./data.json');
+    var data = require('./data.json'); //load data
     var results = '<table border="1"><tr><th>Name</th><th>Country</th><th>Date</th><th>Message</th><tr>';
+    //make the table
     
-    for (var i = 0; i < data.length; i++){
+    for (var i = 0; i < data.length; i++){ //fill it with all the data from json file
         results += '<tr>' +
         '<td>' + data[i].username +'</td>'+
         '<td>' + data[i].country +'</td>'+
         '<td>' + data[i].date +'</td>'+
         '<td>' + data[i].message +'</td>'+ '</tr>';
     }
-    res.send(results);
+    res.send(results); 
 });
 
-app.get('/newmessage', function(req, res){
+app.get('/newmessage', function(req, res){ //load form.html
     res.sendFile(__dirname + '/form.html');
 });
 
@@ -36,7 +37,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.post("/newmessage", function(req, res){
     var data = require('./data.json');
 
-    data.push({
+    data.push({ // add form data to the JSON file
         username: req.body.name,
         country: req.body.country,
         message: req.body.message,
@@ -45,7 +46,7 @@ app.post("/newmessage", function(req, res){
     });
     var jsonStr = JSON.stringify(data);
 
-    fs.writeFile("data.json", jsonStr, function(err, data) {
+    fs.writeFile("data.json", jsonStr, function(err, data) { // write it
         if (err) throw err;
         console.log("It's saved!");
       });
@@ -54,7 +55,7 @@ app.post("/newmessage", function(req, res){
 });
 
 app.get('/ajaxmessage', function(req, res){
-    res.sendFile(__dirname + '/ajaxform.html')
+    res.sendFile(__dirname + '/ajaxform.html') // load ajaxform.html
 });
 app.post('/ajaxmessage', function(req,res){
     var name = req.body.name;
