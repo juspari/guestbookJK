@@ -62,6 +62,6 @@ app.post('/ajaxmessage', function(req,res){
     var message = req.body.message;
     res.send("Form submitted by " + name + " from " + country + ". Your message: " + message);
 })
-app.listen(8081, function(){
+app.listen(PORT, function(){
     console.log('Listening to port ' + PORT);
 });
